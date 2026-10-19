@@ -1,0 +1,18 @@
+{
+  "port": 3000,
+  "adminPassword": "",
+  "maxVideoMB": 60,
+  "blockedWords": [
+    "se mata",
+    "vou te matar",
+    "merece morrer",
+    "morra",
+    "vou te pegar"
+  ],
+  "embedGoogleSites": false,
+  "embedOrigins": [],
+  "maxTotalGB": 20,
+  "backupEveryMin": 60,
+  "keepBackups": 48,
+  "sessionDays": 30
+}

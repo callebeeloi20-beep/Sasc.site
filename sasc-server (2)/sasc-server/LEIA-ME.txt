@@ -1,0 +1,81 @@
+SASC - VERSÃO COM SERVIDOR (roda no seu computador) - com a logo nova
+====================================================
+
+1) INSTALAR O NODE.JS (uma vez)
+   Baixe a versão LTS em https://nodejs.org (precisa ser 18 ou mais nova).
+
+2) DEFINIR A SENHA DE ADMINISTRADOR
+   Abra o arquivo config.json num editor de texto e escreva a senha em "adminPassword".
+   Use uma senha NOVA: a antiga já apareceu na nossa conversa e no código da versão anterior.
+   Sem essa senha, as contas @callebe e @sasc não podem ser criadas.
+
+3) LIGAR O SASC
+   - Windows: dê dois cliques em iniciar.bat
+   - Mac/Linux: no terminal, na pasta, rode  node server.js
+   Abra http://localhost:3000 no navegador.
+
+4) CRIAR AS CONTAS ESPECIAIS
+   - @callebe: cadastro normal, com a senha de administrador no campo de senha. Precisa de foto.
+   - @sasc (conta oficial): igual, mas sem foto (você coloca depois em Configurações > Conta).
+   Qualquer outra tentativa de criar esses @ mostra "Não foi possível criar a conta."
+
+5) COLOCAR NA INTERNET DE GRAÇA (Cloudflare Tunnel)
+   Instale o cloudflared:
+   - Windows:  winget install --id Cloudflare.cloudflared
+   - Mac:      brew install cloudflared
+   Com o Sasc ligado, em outro terminal:
+        cloudflared tunnel --url http://localhost:3000
+   Ele mostra um endereço https://xxxx.trycloudflare.com. Compartilhe esse endereço.
+   Limites (segundo a Cloudflare): o endereço muda toda vez que você liga o túnel,
+   não há garantia de funcionamento contínuo e há um limite de 200 pedidos ao mesmo tempo.
+   Para ter um endereço fixo é preciso criar uma conta na Cloudflare (e, em geral, um domínio).
+
+6) CUIDADOS
+   - Quando o computador ou o túnel desligam, o Sasc some do ar.
+   - Quem tiver o endereço pode abrir o Sasc. Cada pessoa precisa criar conta com @ e senha.
+   - Faça cópia da pasta "data" de vez em quando: ela guarda contas, mensagens e vídeos.
+   - Mantenha o computador atualizado e não compartilhe a senha de administrador.
+   - As contas e vídeos da versão antiga (no navegador) NÃO são levados para esta versão.
+
+6A) SERVIDOR REFORÇADO (já vem ligado)
+   - Reinício automático: iniciar.bat / iniciar.sh religam o servidor se ele parar.
+   - Backup automático do banco a cada hora em data/backups (guarda os últimos 48).
+   - Registro de eventos em data/server.log: erros, cadastros, logins que falharam e ações de administrador.
+   - Segurança: senhas com scrypt, login e cadastro com limite de tentativas, limite de ações por pessoa,
+     sessões que expiram em 30 dias, cookies seguros no túnel https, bloqueio de pedidos vindos de outros sites.
+   - Vídeos: só são aceitos arquivos que realmente são vídeo (mp4, mov, webm, ogg), com limite de envios
+     por pessoa e limite total de espaço (maxTotalGB no config.json).
+   - Velocidade: respostas comprimidas, fotos de perfil em arquivo separado e consulta rápida de novidades.
+     No meu teste (só o servidor, sem a internet) ele atendeu cerca de 1.300 consultas por segundo.
+   - Teste de verdade: a internet de casa e o computador são o limite. Pense em dezenas a poucas
+     centenas de pessoas ao mesmo tempo. Para mais que isso, o certo é um servidor de hospedagem.
+   - Endereço de saúde: /health mostra se o servidor está de pé (sem dados pessoais).
+
+6B) INSTALAR NO CELULAR COMO APP (sem APK)
+   Abra o endereço do túnel no Chrome do Android (ou Safari do iPhone), abra o menu do navegador
+   e escolha "Instalar app" / "Adicionar à tela inicial". O Sasc ganha ícone e abre em tela cheia.
+   Atenção: se o endereço do túnel mudar, o app instalado deixa de funcionar e precisa ser
+   instalado de novo com o endereço novo. Um endereço fixo evita isso.
+
+6C) ATUALIZAR O APP PARA TODO MUNDO (aba Admin > Atualização do app)
+   1. Escolha os arquivos da nova versão (index.html, app.js, app.css, sw.js, manifest.json,
+      ícones e/ou um app.apk) e aguarde o envio. Arquivos .js com erro de sintaxe são barrados.
+   2. Toque em "Publicar nova versão". A versão anterior fica guardada em data/backup.
+   3. Ative o aviso (com uma mensagem, se quiser). Quem já está com o app aberto vê a faixa azul
+      "Atualizar agora". Ao tocar, aparece "Atualizando..." com a barra de 0 a 100%: no mínimo
+      3 segundos e, se houver muita coisa para baixar, o tempo que precisar. Depois o app abre
+      a nova versão (ou baixa o APK, se a pessoa tocar em "Baixar o app (APK)").
+   4. Desative o aviso quando quiser. Para voltar atrás, apague a pasta data/live e reinicie.
+
+7) USAR DENTRO DO GOOGLE SITES (opcional) - veja o PDF "Sasc no Google Sites"
+   Em config.json troque  "embedGoogleSites": false  por  true  e reinicie o Sasc.
+   Se o seu Google Site usar domínio próprio, coloque-o em "embedOrigins", por exemplo ["https://meusite.com"].
+
+8) AJUSTES (config.json)
+   - maxVideoMB: tamanho máximo de cada vídeo (a Cloudflare pode ter o próprio limite).
+   - blockedWords: palavras/frases bloqueadas nos comentários. Acrescente as que quiser.
+
+9) O QUE AINDA NÃO ESTÁ NESTA VERSÃO
+   - Revisão de vídeos por IA e moderação de comentários por IA (precisam de uma chave paga da API).
+     Por enquanto valem o filtro de palavras, as denúncias e a moderação dos administradores.
+   - Vincular Roblox/Discord e confirmar telefone por SMS.
